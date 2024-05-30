@@ -1,0 +1,169 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.PaymentToCompanyInfo:
+    properties:
+      amount:
+        type: integer
+      createdAt:
+        type: string
+      id:
+        type: string
+      payedAt:
+        type: string
+      site:
+        $ref: '#/definitions/models.Site'
+      siteID:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Site:
+    properties:
+      createdAt:
+        type: string
+      deleteFlag:
+        type: boolean
+      id:
+        type: string
+      name:
+        type: string
+      payments:
+        items:
+          $ref: '#/definitions/models.PaymentToCompanyInfo'
+        type: array
+      updatedAt:
+        type: string
+      url:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for managing sites and payment information.
+  title: GORM Migrate Project API
+  version: "1.0"
+paths:
+  /sites:
+    post:
+      consumes:
+      - application/json
+      description: Create a new site with the provided information
+      parameters:
+      - description: Site
+        in: body
+        name: site
+        required: true
+        schema:
+          $ref: '#/definitions/models.Site'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Site'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a new site
+      tags:
+      - sites
+  /sites/{id}:
+    delete:
+      description: Delete a site by ID
+      parameters:
+      - description: Site ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete site by ID
+      tags:
+      - sites
+    get:
+      description: Get site details by ID
+      parameters:
+      - description: Site ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Site'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get site by ID
+      tags:
+      - sites
+    put:
+      consumes:
+      - application/json
+      description: Update site details by ID
+      parameters:
+      - description: Site ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated Site
+        in: body
+        name: site
+        required: true
+        schema:
+          $ref: '#/definitions/models.Site'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Site'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Update site by ID
+      tags:
+      - sites
+swagger: "2.0"
